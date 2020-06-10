@@ -88,15 +88,16 @@ Podemos comprobar la aplicación del comando anterior visualizando los servicios
 
 <p align=center><img src=".github/istioctl-pods.png"></p>
 
-**Paso 2:** Exponer al exterior de nuestro cluster
+**Paso 2:** Exponer al exterior de nuestro cluster y definición de políticas de acceso
 
 Ahora configuramos nuestra aplicación para aceptar trafico externo, agregando el Istio Ingress Gateway que se encargará de gestionar las rutas de nuestro Service Mesh.
+Por defecto, el ingress gateway se encarga de bloquear todas las solicitudes, permitiendo únicamente las que definamos en las políticas de acceso.
 
 `kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml`
 
 <p align=center><img src=".github/istioctl-ingress.png"></p>
 
-Definimos tambien la confugiración de enrutamiento aplicando el archivo destination-rule-ll.yaml
+Definimos tambien la confugiración de enrutamiento, donde se especifica a que servicios se puede acceder desde el exterior, aplicando el archivo destination-rule-all.yaml
 
 `kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml`
 
@@ -143,6 +144,8 @@ Istio viene por defecto con Kiali y podemos visualizar el Service Mesh utilizand
 Las credenciales para acceder, tanto usuario como contraseña es **admin**
 
 <p align=center><img src=".github/istioctl-login.png"></p>
+
+### Captura de datos en Kiali
 
 Seleccionamos en el panel izquierdo Graph y filtramos por nuestro namespace, en este caso Default, sin embargo, no hemos generado solicitudes a nuestra aplicación y por eso nos mostrará **Empty Graph**
 
@@ -191,12 +194,16 @@ Para poder visualizar en Kiali las versiones, seleccionamos la drop list que se 
 
 <p align=center><img src=".github/kiali-mongo.png"></p>
 
-Pero si vamos a la página nos mostrara un error en la sección de reviews. Tenemos que definir la ruta por defecto, a la nueva versión del servicio ratings y al servicio mongodb
+### Definición de políticas de acceso a nuestra base de datos
+
+Pero si vamos a la página nos mostrara un error en la sección de reviews. Tenemos que definir nuevas políticas de acceso por medio del enrutamiento del Ingress Gateway, a la nueva versión del servicio ratings y al servicio mongodb
 
 ```bash
 kubectl apply -f samples/bookinfo/networking/destination-rule-all-mtls.yaml
 kubectl apply -f samples/bookinfo/networking/virtual-service-ratings-db.yaml
 ```
+
+Tenemos que volver a realizar peticiones a nuestra página web con el fin de recibir tráfico en Kiali [Captura de datos en Kiali](#captura-de-datos-en-kiali).
 
 Finalmente Kiali mostrará tráfico entrante a nuestro servicio de mongodb.
 
