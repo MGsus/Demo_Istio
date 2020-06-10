@@ -14,7 +14,7 @@ Usaremos Istio para administrar configuraciones al Load Balancer, crear rutas en
    2.2 [Despliegue de la aplicación](#-despliegue-de-la-aplicacion)<br>
    2.3 [Dashboard Kiali](#-dashboard-kiali)<br>
    2.4 [Despliegue de servicio de base de datos MongoDB](#-despliegue-de-servicio-de-base-de-datos-mongodb)
-3. [Referencias y documentación útil](#referencias-y-documentación-util)
+3. [Referencias y documentación útil](#referencias-y-documentación-útil)
 
 ## 📑 Requisitos
 
@@ -70,7 +70,7 @@ Esto se realiza para un namespace determinado, en este caso usaremos el namespac
 
 ### Despliegue de la aplicación
 
-**Paso 1:** aplicación bookinfo
+**Paso 1: aplicación bookinfo**
 
 Vamos a desplegar la aplicación de ejemplo Bookinfo que está en la carpeta samples del repositorio, usando el comando:
 
@@ -88,7 +88,7 @@ Podemos comprobar la aplicación del comando anterior visualizando los servicios
 
 <p align=center><img src=".github/istioctl-pods.png"></p>
 
-**Paso 2:** Exponer al exterior de nuestro cluster y definición de políticas de acceso
+**Paso 2: Exponer al exterior de nuestro cluster y definición de políticas de acceso**
 
 Ahora configuramos nuestra aplicación para aceptar trafico externo, agregando el Istio Ingress Gateway que se encargará de gestionar las rutas de nuestro Service Mesh.
 Por defecto, el ingress gateway se encarga de bloquear todas las solicitudes, permitiendo únicamente las que definamos en las políticas de acceso.
@@ -196,7 +196,7 @@ Para poder visualizar en Kiali las versiones, seleccionamos la drop list que se 
 
 ### Definición de políticas de acceso a nuestra base de datos
 
-Pero si vamos a la página nos mostrara un error en la sección de reviews. Tenemos que definir nuevas políticas de acceso por medio del enrutamiento del Ingress Gateway, a la nueva versión del servicio ratings y al servicio mongodb
+Pero si vamos a la página nos mostrará un error en la sección de reviews. Tenemos que definir nuevas políticas de acceso por medio del enrutamiento del Ingress Gateway, a la nueva versión del servicio ratings y al servicio mongodb
 
 ```bash
 kubectl apply -f samples/bookinfo/networking/destination-rule-all-mtls.yaml
